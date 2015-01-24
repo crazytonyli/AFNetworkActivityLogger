@@ -22,14 +22,7 @@
 
 #import <Foundation/Foundation.h>
 
-typedef NS_ENUM(NSUInteger, AFHTTPRequestLoggerLevel) {
-  AFLoggerLevelOff,
-  AFLoggerLevelDebug,
-  AFLoggerLevelInfo,
-  AFLoggerLevelWarn,
-  AFLoggerLevelError,
-  AFLoggerLevelFatal = AFLoggerLevelOff,
-};
+#import "AFNetworkActivityOutput.h"
 
 /**
  `AFNetworkActivityLogger` logs requests and responses made by AFNetworking, with an adjustable level of detail.
@@ -44,8 +37,15 @@ typedef NS_ENUM(NSUInteger, AFHTTPRequestLoggerLevel) {
 
 /**
  The level of logging detail. See "Logging Levels" for possible values. `AFLoggerLevelInfo` by default.
+
+ @deprecated Use `output.level` instead.
  */
-@property (nonatomic, assign) AFHTTPRequestLoggerLevel level;
+@property (nonatomic, assign) AFHTTPRequestLoggerLevel level DEPRECATED_ATTRIBUTE;
+
+/**
+ Logging output. `AFNetworkActivityConsoleOutput` by default.
+ */
+@property (nonatomic, strong) id<AFNetworkActivityOutput> output;
 
 /**
  Omit requests which match the specified predicate, if provided. `nil` by default.
@@ -71,39 +71,6 @@ typedef NS_ENUM(NSUInteger, AFHTTPRequestLoggerLevel) {
 
 @end
 
-///----------------
-/// @name Constants
-///----------------
-
-/**
- ## Logging Levels
-
- The following constants specify the available logging levels for `AFNetworkActivityLogger`:
-
- enum {
- AFLoggerLevelOff,
- AFLoggerLevelDebug,
- AFLoggerLevelInfo,
- AFLoggerLevelWarn,
- AFLoggerLevelError,
- AFLoggerLevelFatal = AFLoggerLevelOff,
- }
-
- `AFLoggerLevelOff`
- Do not log requests or responses.
-
- `AFLoggerLevelDebug`
- Logs HTTP method, URL, header fields, & request body for requests, and status code, URL, header fields, response string, & elapsed time for responses.
- 
- `AFLoggerLevelInfo`
- Logs HTTP method & URL for requests, and status code, URL, & elapsed time for responses.
-
- `AFLoggerLevelWarn`
- Logs HTTP method & URL for requests, and status code, URL, & elapsed time for responses, but only for failed requests.
- 
- `AFLoggerLevelError`
- Equivalent to `AFLoggerLevelWarn`
-
- `AFLoggerLevelFatal`
- Equivalent to `AFLoggerLevelOff`
-*/
+FOUNDATION_EXTERN NSURLRequest * AFNetworkRequestFromNotification(NSNotification *notification);
+FOUNDATION_EXTERN NSError * AFNetworkErrorFromNotification(NSNotification *notification);
+FOUNDATION_EXTERN NSDate * AFNetworkRequestStartDateFromNotification(NSNotification *notification);
