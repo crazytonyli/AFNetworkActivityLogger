@@ -198,9 +198,11 @@ static NSString * AFNetworkActivityFileOutputDefaultPath() {
 
     if (data) {
         NSStringEncoding stringEncoding = NSUTF8StringEncoding;
-        CFStringEncoding IANAEncoding = CFStringConvertIANACharSetNameToEncoding((__bridge CFStringRef)response.textEncodingName);
-        if (IANAEncoding != kCFStringEncodingInvalidId) {
-            stringEncoding = CFStringConvertEncodingToNSStringEncoding(IANAEncoding);
+        if (response.textEncodingName) {
+            CFStringEncoding IANAEncoding = CFStringConvertIANACharSetNameToEncoding((__bridge CFStringRef)response.textEncodingName);
+            if (IANAEncoding != kCFStringEncodingInvalidId) {
+                stringEncoding = CFStringConvertEncodingToNSStringEncoding(IANAEncoding);
+            }
         }
 
         NSString *responseString = [[NSString alloc] initWithData:data encoding:stringEncoding];
